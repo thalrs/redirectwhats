@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Redirecionamento para WhatsApp</title>
+    <style>
+        body {
+            background-color: #34B7F1;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            margin: 20% auto;
+            color: #fff;
+        }
+
+        .countdown {
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <p>Aguarde enquanto será redirecionado para o WhatsApp...</p>
+    <div class="countdown" id="countdown">4</div>
+    <script>
+        // Lista de números para redirecionamento
+        var numeros = [
+            "+5521981213740",
+            "+552182388451",
+            "+5581999015029",
+            "+5521971430288"
+        ];
+
+        // Função para obter ou definir o índice atual na sessão do navegador
+        function getOuDefinirIndiceAtual() {
+            var indiceAtual = sessionStorage.getItem("indiceAtual");
+            if (indiceAtual === null) {
+                // Se o índice não estiver definido, definir para 0
+                indiceAtual = 0;
+            }
+            return parseInt(indiceAtual);
+        }
+
+        // Função para redirecionar para o próximo número e atualizar o índice na sessão
+        function redirecionarProximoNumero() {
+            var indiceAtual = getOuDefinirIndiceAtual();
+
+            // Redirecionar para o número atual
+            window.location.href = "https://wa.me/" + numeros[indiceAtual];
+
+            // Atualizar o índice na sessão para o próximo número
+            indiceAtual = (indiceAtual + 1) % numeros.length;
+            sessionStorage.setItem("indiceAtual", indiceAtual);
+        }
+
+        // Contador regressivo
+        var tempoRestante = 4;
+        var countdownElement = document.getElementById('countdown');
+
+        function atualizarContador() {
+            countdownElement.innerHTML = tempoRestante;
+
+            if (tempoRestante <= 0) {
+                redirecionarProximoNumero();
+            } else {
+                tempoRestante--;
+                setTimeout(atualizarContador, 1000);
+            }
+        }
+
+        // Iniciar o contador
+        setTimeout(function() {
+            atualizarContador();
+        }, 1000);
+    </script>
+</body>
+</html>
